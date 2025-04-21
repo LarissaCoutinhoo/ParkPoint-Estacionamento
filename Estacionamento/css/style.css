@@ -1,16 +1,19 @@
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    color: #333;
+    color: black;
 }
+
 header {
-    background-color: #0077cc;
+    background-color: #081218;
     color: white;
     padding: 1em;
     text-align: center;
+}
+header .logo{
+    width: 60px;
 }
 nav a {
     margin: 0 15px;
@@ -21,6 +24,7 @@ main {
     padding: 2em;
     text-align: center;
 }
+
 footer {
     background-color: #ddd;
     text-align: center;
