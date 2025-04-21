@@ -1,0 +1,27 @@
+{
+  "name": "atv-dwiii-controleentradaveiculos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "-": "^0.0.1",
+    "@prisma/client": "^6.6.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "e": "^0.2.33",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "luxon": "^3.6.1",
+    "prisma": "^6.6.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
+}

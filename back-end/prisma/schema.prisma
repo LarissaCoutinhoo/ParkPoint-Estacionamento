@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Veiculo {
+  id        Int       @id @default(autoincrement())
+  placa           String    @unique
+  cor             String  
+  tipo            String    // (Carro, moto, ônibus, van, caminhão)
+  modelo          String
+  id_funcionario  Int
+  status          Boolean @default(true) // (Ativo - Cancelado)
+
+  funcionario       Funcionario      @relation(fields: [id_funcionario], references: [id])
+  entradas  Entrada[] // relacionamento 1:N com Entrada
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome          String
+  cpf           String  @unique
+  status        Boolean @default(true)  // (Cancelado ou Ativo)
+  observacao    String? // (Causa do cancelamento, fidelidade, entre outras coisas que podem se encaixar em uma observação)
+  id_funcionario Int
+
+  funcionario       Funcionario      @relation(fields: [id_funcionario], references: [id])
+  entradas  Entrada[] // relacionamento 1:N com Entrada
+}
+
+model Funcionario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  login     String  @unique
+  senha     String
+  nivel     String  // (ADM, Normal ou Cancelado)
+
+  entradas  Entrada[] // relacionamento 1:N com Entrada
+  clientes  Cliente[] // relacionamento 1:N com Cliete
+  veiculos  Veiculo[] // relacionamento 1:N com Cliete
+}
+
+model Entrada {
+  id              Int       @id @default(autoincrement())
+  data_entrada    DateTime  @db.Timestamptz
+  data_saida      DateTime? @db.Timestamptz
+  status          String // (Alocado, Finalizado, Cancelado)
+  id_veiculo      Int
+  id_cliente      Int
+  id_funcionario  Int
+  valor_hora      Decimal
+  valor_pagar     Decimal?
+
+  veiculo       Veiculo      @relation(fields: [id_veiculo], references: [id])
+  cliente       Cliente       @relation(fields: [id_cliente], references: [id])
+  funcionario   Funcionario   @relation(fields: [id_funcionario], references: [id])
+}

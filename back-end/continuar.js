@@ -1,0 +1,3 @@
+/*
+    Validar as consultas de Entradas
+*/
