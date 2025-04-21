@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Entrada de Veículos</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Entrada de Veículos</h1>
+        <nav>
+            <a href="../index.html">Início</a>
+            <a href="saida.html">Saída</a>
+            <a href="status.html">Status</a>
+        </nav>
+    </header>
+    <main>
+        <form id="entradaForm">
+            <label for="placa">Placa:</label>
+            <input type="text" id="placa" required><br>
+            <label for="tipo">Tipo de Veículo:</label>
+            <select id="tipo">
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+            </select><br>
+            <button type="submit">Registrar Entrada</button>
+        </form>
+        <p id="mensagem"></p>
+    </main>
+    <script src="../js/app.js"></script>
+</body>
+</html>
