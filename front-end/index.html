@@ -10,20 +10,25 @@
     <header>
         <img src="img/logo.png" alt="Logotipo" class="logo">
         <h1>ParkPoint</h1>
-        <nav>
-            <a href="pages/entrada.html">Entrada</a>
-            <a href="pages/saida.html">Saída</a>
-            <a href="pages/status.html">Status</a>
-        </nav>
     </header>
     <main>
         <section class="intro">
-            <h2>Bem-vindo ao ParkPoint, o seu sistema inteligente de controle de estacionamento!</h2>
-            <p>Escolha uma das opções acima para começar.</p>
+            <h2>Bem-vindo ao ParkPoint. Informe suas credenciais para entrar...</h2>
         </section>
+        <form id="loginForm">
+            <label for="login">Login:</label>
+            <input type="text" id="login" required><br><br>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" required><br><br>
+            
+        </form>
+        <button onclick="entrar(loginForm.login.value, loginForm.senha.value)">Entrar</button>
+        <p id="mensagem"></p>
     </main>
     <footer>
         <p>Desenvolvido por Larissa Coutinho, Luís Pedro e Maria Luiza</p>
     </footer>
+    <script src="js/login.js"></script>
 </body>
 </html>

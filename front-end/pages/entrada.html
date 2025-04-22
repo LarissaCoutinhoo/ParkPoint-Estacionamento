@@ -10,24 +10,41 @@
     <header>
         <h1>Entrada de Veículos</h1>
         <nav>
-            <a href="../index.html">Início</a>
+            <a href="inicial.html">Início</a>
             <a href="saida.html">Saída</a>
             <a href="status.html">Status</a>
         </nav>
     </header>
     <main>
         <form id="entradaForm">
-            <label for="placa">Placa:</label>
-            <input type="text" id="placa" required><br>
-            <label for="tipo">Tipo de Veículo:</label>
-            <select id="tipo">
-                <option value="carro">Carro</option>
-                <option value="moto">Moto</option>
-            </select><br>
+            <label for="placa">Placa Veículo:</label>
+            <input type="text" id="placa" required onblur="verPlaca(entradaForm.placa.value)"><br>
+            <div id="dadosVeiculo" style="display: none;">
+                <br>
+                <label for="cor">Cor Veículo:</label>
+                <input type="text" id="cor" required><br><br>
+                <label for="tipo">Tipo de Veículo:</label>
+                <select id="tipo">
+                    <option value="carro">Carro</option>
+                    <option value="moto">Moto</option>
+                </select><br><br>
+                <label for="modelo">Modelo Veículo:</label>
+                <input type="text" id="modelo" required><br><br>
+            </div><br>
+
+            <label for="cpf">CPF Cliente:</label>
+            <input type="text" id="cpf" required><br><br>
+            <div id="dadosCliente" style="display: none;">
+                <label for="nome">Nome Cliente:</label>
+                <input type="text" id="nome" required><br><br>
+                <label for="observacao">Observação Cliente:</label>
+                <input type="text" id="observacao" required><br><br>
+            </div>
             <button type="submit">Registrar Entrada</button>
         </form>
         <p id="mensagem"></p>
     </main>
     <script src="../js/app.js"></script>
+    <script src="../js/entrada.js"></script>
 </body>
 </html>
