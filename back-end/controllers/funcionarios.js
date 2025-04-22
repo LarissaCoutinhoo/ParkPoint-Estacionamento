@@ -208,7 +208,7 @@ controller.loginFuncionario = async function(req, res) {
         if (qtFuncionarios){
             // Buscando os dados de um funcionário específico
             const verificaLogin = await prisma.funcionario.findFirst({
-                where: {login: req.params.login}
+                where: {login: req.body.login}
             });
         
             // Veridicando se o usuário existe
@@ -227,9 +227,9 @@ controller.loginFuncionario = async function(req, res) {
                 return res.status(400).json({ mensagem: "Senha Inválida!"});
             }
 
-            // Recuperando os dados alterados do funcionário para iniciar a sessão no vanegador
+            // Recuperando os dados alterados do funcionário para iniciar a sessão no nanegador
             const funcionarioCadastrado = await prisma.funcionario.findFirst({
-                where: { login: req.params.login }
+                where: { login: req.body.login }
             });
 
             // Alterando os dados da sessão
@@ -240,6 +240,7 @@ controller.loginFuncionario = async function(req, res) {
                 nivel: funcionarioCadastrado.nivel
             };
 
+            
             // Retornando resultado para redirecionamento no front
             // console.log(req.session.funcionario);
             return res.status(201).json({result: true});
@@ -252,7 +253,7 @@ controller.loginFuncionario = async function(req, res) {
 
             req.body.nome   = "Usuário Adminsitrador";
             req.body.nivel  = "ADM";
-            req.body.login  = req.params.login;
+            req.body.login  = req.body.login;
 
             await prisma.funcionario.create({ data: req.body });
 

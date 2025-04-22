@@ -21,6 +21,10 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 50 } // 50 minutos
 }));
 
+import cors from 'cors';
+app.use(cors());
+
+
 // Sessão de Rotas
 import funcionariosRouter from './routes/funcionarios.js';
 app.use('/funcionarios', funcionariosRouter);

@@ -28,10 +28,10 @@ router.get('/:id', controller.retrieveOne);
 */
 
 // (Login)
-router.get('/login/:login', controller.loginFuncionario);
+router.post('/login/', controller.loginFuncionario);
 // Dados a serem informados
 /*
-    login via URL
+    login  String
     senha: String
 */
 
