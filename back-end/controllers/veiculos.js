@@ -176,6 +176,8 @@ controller.delete = async function(req, res) {
 controller.retrieveOnePlaca = async function(req, res) {
     try {
 
+        console.log(req.session);
+
         // Verificando se a sessão foi iniciada
         if (!verificaSessao(req)){
             return res.status(400).json({ mensagem: "Sessão não iniciada!" });
@@ -185,6 +187,10 @@ controller.retrieveOnePlaca = async function(req, res) {
         const result = await prisma.veiculo.findFirst({
             where: { placa: req.params.placa }
         });
+
+        if (!result){
+            return res.status(400).json({mensagem: "Veículo Não Encontrado!"});
+        }
 
         return res.send(result);
 

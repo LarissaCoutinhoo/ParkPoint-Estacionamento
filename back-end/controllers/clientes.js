@@ -186,6 +186,10 @@ controller.retrieveOneCpf = async function(req, res) {
             where: { cpf: req.params.cpf }
         });
 
+        if (!result){
+            return res.status(400).json({mensagem: "Cliente Não Encontrado!"});
+        }
+
         return res.send(result);
 
     }

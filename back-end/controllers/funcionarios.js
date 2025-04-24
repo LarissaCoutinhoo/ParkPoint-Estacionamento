@@ -240,7 +240,8 @@ controller.loginFuncionario = async function(req, res) {
                 nivel: funcionarioCadastrado.nivel
             };
 
-            
+            console.log('Sessão salva no login:', req.session);
+
             // Retornando resultado para redirecionamento no front
             // console.log(req.session.funcionario);
             return res.status(201).json({result: true});

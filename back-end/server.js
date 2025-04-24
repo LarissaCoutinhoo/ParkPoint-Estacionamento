@@ -1,8 +1,9 @@
 // Importando bibliotecas necessárias
 import express, { json, urlencoded } from 'express';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import session from 'express-session';
+import cors from 'cors';
 
 const port = 3000;
 
@@ -13,16 +14,21 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Configurando a sessão para o usuário ao logar
-app.use(session({
-    secret: 'sua_chave_secreta_segura',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 50 } // 50 minutos
+app.use(cors({
+  origin: ['http://127.0.0.1:5500', 'http://localhost:5500'], // inclua os dois por segurança
+  credentials: true
 }));
 
-import cors from 'cors';
-app.use(cors());
+app.use(session({
+  secret: 'segredo_bem_forte',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax', // 'lax' funciona bem com GET e navegação normal
+    secure: false    // true apenas se estiver com HTTPS
+  }
+}));
 
 
 // Sessão de Rotas
