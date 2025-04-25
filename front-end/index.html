@@ -15,17 +15,22 @@
         <section class="intro">
             <h2>Bem-vindo ao ParkPoint. Informe suas credenciais para entrar...</h2>
         </section>
-        <form id="loginForm">
-            <label for="login">Login:</label>
-            <input type="text" id="login" required><br><br>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" required><br><br>
-            
-        </form>
-        <button onclick="entrar(loginForm.login.value, loginForm.senha.value)">Entrar</button>
-        <p id="mensagem"></p>
+        <form id="loginForm" class="form-container">
+            <div class="form-group">
+              <label for="login">Login</label>
+              <input type="text" id="login" required>
+            </div>
+          
+            <div class="form-group">
+              <label for="senha">Senha</label>
+              <input type="password" id="senha" required>
+            </div>
+          </form>
+          
+          <button class="btn" onclick="entrar(loginForm.login.value, loginForm.senha.value)">Entrar</button>
+          <p id="mensagem" class="mensagem"></p>    
     </main>
+    <br><br><br>
     <footer>
         <p>Desenvolvido por Larissa Coutinho, Luís Pedro e Maria Luiza</p>
     </footer>

@@ -13,7 +13,7 @@ async function verPlaca(placa) {
         const resposta = await fetch('http://127.0.0.1:3000/veiculos/placa/' + placa, {
             method: 'GET',
             credentials: 'include' // ESSENCIAL para cookies de sessão
-          });
+        });
 
         const dados = await resposta.json();
 
@@ -30,6 +30,7 @@ async function verPlaca(placa) {
                 return "Erro: " + dados.mensagem;
             }
         }
+        
         document.getElementById('cpf').focus();
         document.getElementById('dadosVeiculo').style.display = "none";
         return "cadastrado";
@@ -78,7 +79,7 @@ async function verCpf(cpf){
                 return "cadastrar";
             } else if (dados.mensagem === "Sessão não iniciada!") {
                 window.location.href = '../index.html';
-                return false;
+                return;
             } else {
                 document.getElementById('mensagem').innerHTML = dados.mensagem;
                 return "erro";
