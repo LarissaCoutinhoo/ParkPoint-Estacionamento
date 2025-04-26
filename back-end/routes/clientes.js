@@ -41,6 +41,13 @@ router.put('/:id', controller.update);
     observacao: String (Opcional)
 */
 
+router.put('/status/:id', controller.updateStatus);
+// Dados a serem informados
+/*
+    id via url
+    status:     Boolean (false - Cancelado) ou (true - Ativo)
+*/
+
 router.delete('/:id', controller.delete);
 // Dados a serem informados
 /*

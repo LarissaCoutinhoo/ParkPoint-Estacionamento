@@ -3,7 +3,6 @@ async function verPlaca(placa) {
     document.getElementById('mensagem').innerHTML = "";
 
     if (!placa || placa.trim() === "") {
-        document.getElementById('placa').focus();
         document.getElementById('mensagem').innerHTML = "Placa Nula!";
         return "Placa Nula";
     }
@@ -49,7 +48,6 @@ async function verCpf(cpf){
     document.getElementById('mensagem').innerHTML = "";
 
     if (!cpf || cpf.trim() === "") {
-        document.getElementById('cpf').focus();
         document.getElementById('mensagem').innerHTML = "CPF Nulo!";
         return "invalido";
     }
@@ -58,7 +56,6 @@ async function verCpf(cpf){
     const regexCPF = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
     const teste = regexCPF.test(cpf);
     if (!teste){
-        document.getElementById('cpf').focus();
         document.getElementById('mensagem').innerHTML = "CPF Inválido!";
         return "invalido";
     }

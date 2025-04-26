@@ -1,10 +1,10 @@
 var idCliAlt = null;
 
-// Função para mostrar os clientes na tabela
-async function carCli() {
+// Função para mostrar as entradas na tabela
+async function carEnt() {
     try {
 
-      const resposta = await fetch('http://127.0.0.1:3000/clientes/', {
+      const resposta = await fetch('http://127.0.0.1:3000/entradas/', {
         method: 'GET',
         credentials: 'include'
       });
@@ -15,33 +15,30 @@ async function carCli() {
         return;
       }
 
-      const tabela = document.querySelector("#tabelaClientes tbody");
+      const tabela = document.querySelector("#tabelaEntradas tbody");
       tabela.innerHTML = "";
   
-      dados.forEach(cliente => {
+      dados.forEach(entrada => {
         const linha = document.createElement('tr');
 
-        if (cliente.status === true){
-            cliente.status = "Ativo";
-        }else{
-            cliente.status = "Cancelado";
+        let exclusao = '';
+        if (entrada.status === "Alocado"){
+          exclusao = `<i class='bi bi-trash-fill' title='Cancelar' style='cursor: pointer;' onclick='canCli(${entrada.id})'></i>`;
         }
 
-        if (cliente.observacao === null){
-            cliente.observacao = "";
-        }
-
-        let exclusao = `<i class='bi bi-trash-fill' title='Cancelar' style='cursor: pointer;' onclick='canCli(${cliente.id})'></i>`;
-        if (cliente.status === "Cancelado"){
-          exclusao = `<i class='bi bi-arrow-up-left-square-fill' title='Reabilitar' style='cursor: pointer;' onclick='habCli(${cliente.id})'></i>`;
-        }
+        const totalHoras = 0;
         
         linha.innerHTML = `
-          <td style="text-align: left;">${cliente.nome}</td>
-          <td>${cliente.cpf}</td>
-          <td>${cliente.observacao}</td>
-          <td>${cliente.status}</td>
-          <td><i class="bi bi-pencil-square" style='cursor: pointer;' title='Alterar' onclick='busCli(${cliente.id})'></i></td>
+          <td style="text-align: left;">${entrada.id_veiculo}</td>
+          <td>${entrada.id_cliente}</td>
+          <td>${entrada.data_entrada}</td>
+          <td>${entrada.data_saida}</td>
+          <td>${totalHoras}</td>
+          <td>${entrada.valor_hora}</td>
+          <td>${entrada.valor_pagar}</td>
+          <td>${entrada.status}</td>
+          <td>${entrada.id_funcionario}</td>
+          <td><i class="bi bi-pencil-square" style='cursor: pointer;' title='Alterar' onclick='busCli(${entrada.id})'></i></td>
           <td>${exclusao}</td>
         `;
   
@@ -49,8 +46,8 @@ async function carCli() {
       });
   
     } catch (erro) {
-      console.error("Erro ao carregar clientes:", erro);
-      document.getElementById('mensagem').innerText = "Erro ao carregar os clientes!";
+      console.error("Erro ao carregar entradas:", erro);
+      document.getElementById('mensagem').innerText = "Erro ao carregar os entradas!";
     }
 }
 

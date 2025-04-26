@@ -125,6 +125,55 @@ controller.update = async function(req, res) {
     }
 }
 
+// Função Validada 26/04
+// Alterando o status do cliente
+controller.updateStatus = async function(req, res) {
+    try {
+
+        // Verificando se a sessão foi iniciada
+        if (!verificaSessao(req)){
+            return res.status(400).json({ mensagem: "Sessão não iniciada!" });
+        }
+
+        // Obtendo os dados do cliente atual, passados pelo atributo ID
+        const clienteCadastrado = await prisma.cliente.findFirst({
+            where: { id: Number(req.params.id) }
+        });
+
+        if(!clienteCadastrado) {
+            return res.status(400).json({ mensagem: "Cliente Não Encontrado!" });
+        }
+
+        // Definindo o id do funcionário responsável pela alteração
+        req.body.id_funcionario = req.session.funcionario.id;
+        
+        // Atualizando os dados do cliente
+        await prisma.cliente.update({
+            where: { id: Number(req.params.id) },
+            data: req.body
+        });
+
+        // Retornando resultado para redirecionamento no front
+        // console.log(req.session.cliente);
+        return res.status(201).json({result: true});
+
+    }
+    catch(error) {
+        // P2025: erro do Prisma referente a objeto não encontrado
+        if(error?.code === 'P2025') {
+            // Não encontrou e não alterar ~> retorna HTTP 404: Not Found
+            return res.status(400).json({mensagem: "Cliente Não Encontrado!"});
+        }else{
+            // Deu errado: exibe o erro no terminal
+            console.error(error);
+
+            // Envia o erro ao front-end, com status de erro
+            // HTTP 500: Internal Server Error
+            return res.status(500).send(error);
+        }
+    }
+}
+
 // Função Validada 19/04
 // Deletando o cliente
 // Não de fato, mas altera o seu status para Cancelado, afim de manter o histórico das entradas realizada por ele
