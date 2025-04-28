@@ -94,7 +94,7 @@ async function verCpf(cpf){
 
 
 // Função para registrar a entrada
-async function regEntrada(placa, cor, tipo, modelo, cpf, nome, observacao, valor_hora){
+async function regEntrada(placa, cor, id_tipo, modelo, cpf, nome, observacao, valor_hora){
     
     document.getElementById('mensagem').innerHTML = "";
 
@@ -137,7 +137,7 @@ async function regEntrada(placa, cor, tipo, modelo, cpf, nome, observacao, valor
         if (resPlaca === "cadastrar"){
 
             // Validando os dados adicionais
-            if (cor.trim() === "" || modelo.trim() === "" || (tipo !== "moto" && tipo !== "carro")){
+            if (cor.trim() === "" || modelo.trim() === ""){
                 return document.getElementById('mensagem').innerHTML = "Dados do veículo Inválidos!";
             }
 
@@ -145,7 +145,7 @@ async function regEntrada(placa, cor, tipo, modelo, cpf, nome, observacao, valor
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ placa, cor, tipo, modelo })
+                body: JSON.stringify({ placa, cor, id_tipo, modelo })
             });
 
         }else if (resPlaca !== "cadastrado"){

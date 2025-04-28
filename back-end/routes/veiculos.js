@@ -11,7 +11,7 @@ router.post('/', controller.create);
 /*
     placa:  String
     cor:    String
-    tipo:   String 
+    id_tipo:   Int 
     modelo: String
 */
 

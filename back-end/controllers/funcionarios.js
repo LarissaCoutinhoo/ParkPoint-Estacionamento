@@ -28,6 +28,14 @@ function verificaSessao(req){
         return false;
     }
 }
+controller.verificaSessao = async function(req, res){
+    const verSes = verificaSessao(req);
+    if (verSes){
+        return res.status(201).json({result: verSes, nomeUsuario: req.session.funcionario.nome});
+    }else{
+        return res.status(400).json({result: verSes});
+    }
+}
 
 // Função Validada 19/04
 // Encerrando a sessão quando solicitado
@@ -123,18 +131,7 @@ controller.retrieveOne = async function(req, res) {
             where: {id: Number(req.params.id)}
         });
 
-        // Verificando se o usuário que solicitou os dados está solicitando os seus dados ou o de outro funcionário
-        if (Number(req.params.id) === req.session.funcionario.id){
-            return res.send(result);
-        }else{
-
-            // caso não seja os dele, verificando se ele tem permissão para ver os dados de outro funcionário
-            if (req.session.funcionario.nivel === "ADM"){
-                return res.send(result);
-            }else{
-                return res.status(400).json({mensagem: "Esse Usuário não tem permissão para acessar essa função!"});
-            }
-        }
+        return res.send(result);
     
     }
     catch(error) {

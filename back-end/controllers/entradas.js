@@ -51,12 +51,12 @@ controller.entrada = async function(req, res) {
 
         // Definindo o cliente pelo CPF informado
         const cliente = await prisma.cliente.findFirst({
-            where: { cpf: req.body.cpf }
+            where: { cpf: req.body.cpf, status: true}
         });
 
         // Verificando se o cpf informado é válido
         if (!cliente){
-            return res.status(400).json({ mensagem: "Cliente não cadastrado!" });
+            return res.status(400).json({ mensagem: "Cliente não cadastrado, ou cancelado!" });
         }
 
         req.body.id_cliente = cliente.id;
@@ -98,6 +98,15 @@ controller.update = async function(req, res) {
         // Verificando se a sessão foi iniciada
         if (!verificaSessao(req)){
             return res.status(400).json({ mensagem: "Sessão não iniciada!" });
+        }
+
+        // Obtendo a data da entrada
+        const verEntrada = await prisma.entrada.findFirst({
+            where: { id: Number(req.params.id), status: "Alocado" }
+        });
+
+        if (!verEntrada){
+            return res.status(400).json({mensagem: "Entrada Não Encontrada!"});
         }
 
         // Obtendo o id do veiculo informado pela placa
@@ -189,10 +198,83 @@ controller.cancelar = async function(req, res) {
             return res.status(400).json({ mensagem: "Sessão não iniciada!" });
         }
 
+        // Obtendo a data da entrada
+        const entrada = await prisma.entrada.findFirst({
+            where: { id: Number(req.params.id), status: "Alocado" }
+        });
+
+        if (!entrada){
+            return res.status(400).json({mensagem: "Entrada Não Encontrada!"});
+        }
+
         await prisma.entrada.update({
             where: { id: Number(req.params.id) },
             data: {
                 status: "Cancelado",
+                id_funcionario: req.session.funcionario.id
+            }
+        });
+
+        return res.status(201).json({result: true});
+    }
+    catch(error) {
+      // P2025: erro do Prisma referente a objeto não encontrado
+      if(error?.code === 'P2025') {
+        // Não encontrou e não excluiu ~> retorna HTTP 404: Not Found
+        return res.status(400).json({mensagem: "Entrada Não Encontrado!"});
+      }
+      else {    // Outros tipos de erro
+        // Deu errado: exibe o erro no terminal
+        console.error(error);
+  
+        // Envia o erro ao front-end, com status de erro
+        // HTTP 500: Internal Server Error
+        return res.status(500).send(error);
+      }
+    }
+}
+
+// Função Validada 26/04
+// Reinicando a entrada (Descancelando)
+controller.reiniciar = async function(req, res) {
+    try {
+
+        // Verificando se a sessão foi iniciada
+        if (!verificaSessao(req)){
+            return res.status(400).json({ mensagem: "Sessão não iniciada!" });
+        }
+
+        // Obtendo a data da entrada
+        const entrada = await prisma.entrada.findFirst({
+            where: { id: Number(req.params.id), status: "Cancelado" }
+        });
+
+        if (!entrada){
+            return res.status(400).json({mensagem: "Entrada Não Encontrada!"});
+        }
+
+        // Verificando se ja não há entrada com essa placa Alocada
+        const verEntradaAlo = await prisma.entrada.findFirst({
+            where: { id_veiculo: entrada.id_veiculo, status: "Alocado" }
+        });
+
+        if (verEntradaAlo){
+            return res.status(400).json({mensagem: "Entrada com essa placa já Alocada!"});
+        }
+
+        // Verificando se o usuário que pertencia a essa entrada não está banido, antes de reiniciala
+        const verCli = await prisma.cliente.findFirst({
+            where: { id: entrada.id_cliente, status: true }
+        });
+
+        if (!verCli){
+            return res.status(400).json({mensagem: "Cliente Cancelado, não se pode reiniciar a entrada!"});
+        }
+
+        await prisma.entrada.update({
+            where: { id: Number(req.params.id) },
+            data: {
+                status: "Alocado",
                 id_funcionario: req.session.funcionario.id
             }
         });
@@ -231,14 +313,18 @@ controller.saida = async function(req, res) {
 
         // Obtendo a data da entrada
         const entrada = await prisma.entrada.findFirst({
-            where: { id: Number(req.params.id) }
+            where: { id: Number(req.params.id), status: "Alocado" }
         });
 
+        if (!entrada){
+            return res.status(400).json({mensagem: "Entrada Não Encontrada!"});
+        }
+
         // Diferença em milissegundos
-        let horas = Math.abs(data_saida - entrada.data_entrada);
+        let horas = Math.abs(data_saida - entrada.data_entrada) / (1000 * 60 * 60);
 
         // Converter para horas
-        horas = horas / (1000 * 60 * 60);
+        horas = Number(horas.toFixed(2));
 
         console.log(`Horas estadia: ${horas} horas`);
 
@@ -258,7 +344,7 @@ controller.saida = async function(req, res) {
       // P2025: erro do Prisma referente a objeto não encontrado
       if(error?.code === 'P2025') {
         // Não encontrou e não excluiu ~> retorna HTTP 404: Not Found
-        return res.status(400).json({mensagem: "Entrada Não Encontrado!"});
+        return res.status(400).json({mensagem: "Entrada Não Encontrada!"});
       }
       else {    // Outros tipos de erro
         // Deu errado: exibe o erro no terminal
@@ -459,7 +545,8 @@ controller.retrieveAllAlocados = async function(req, res) {
 
         // Obtendo todas as entradas com satatus Alocado
         const result = await prisma.entrada.findMany({
-            where: { status: "Alocado" }
+            where: { status: "Alocado" },
+            orderBy: {data_entrada: "asc"}
         });
 
         if (!result){
@@ -510,7 +597,8 @@ controller.retrieveAllCancelados = async function(req, res) {
 
         // Obtendo todas as entradas com satatus Alocado
         const result = await prisma.entrada.findMany({
-            where: { status: "Cancelado" }
+            where: { status: "Cancelado" },
+            orderBy: {data_entrada: "asc"}
         });
 
         if (!result){
@@ -561,7 +649,8 @@ controller.retrieveAllFinalizados = async function(req, res) {
 
         // Obtendo todas as entradas com satatus Alocado
         const result = await prisma.entrada.findMany({
-            where: { status: "Finalizado" }
+            where: { status: "Finalizado" },
+            orderBy: {data_saida: "asc"}
         });
 
         if (!result){
@@ -680,6 +769,70 @@ controller.retrieveAll = async function(req, res) {
         });
 
         return res.send(result);
+
+    }
+    catch(error) {
+        // Deu errado: exibe o erro no terminal
+        console.error(error);
+
+        // Envia o erro ao front-end, com status de erro
+        // HTTP 500: Internal Server Error
+        return res.status(500).send(error);
+    }
+}
+
+
+// Verificar a quantidade de veiculos alocados por tipo
+controller.countVeiculosAlo = async function(req, res) {
+    try {
+
+        // Verificando se a sessão foi iniciada
+        if (!verificaSessao(req)){
+            return res.status(400).json({ mensagem: "Sessão não iniciada!" });
+        }
+
+        const result = await prisma.tipoVeiculo.findMany({ 
+            orderBy: [{ descricao: "asc"}] 
+        });
+
+        if (!result){
+            return res.status(400).json({mensagem: "Nenhum Tipo de Veículo Encontrada!"});
+        }
+        const dados = result;
+
+        const contagemPorTipo = [];
+
+        for (const tipoVeiculo of dados) {
+        
+        const veiculos = await prisma.veiculo.findMany({ 
+            where: { id_tipo: tipoVeiculo.id }
+        });
+
+        if (veiculos.length === 0) {
+            contagemPorTipo.push({ tipo: tipoVeiculo.descricao, quantidade: 0 });
+            continue;
+        }
+
+        // Pegar os IDs dos veículos encontrados
+        const idsVeiculos = veiculos.map(v => v.id);
+
+        // Buscar quantos desses veículos estão "Alocados"
+        const entradasAlocadas = await prisma.entrada.findMany({
+            where: {
+            id_veiculo: { in: idsVeiculos },
+            status: "Alocado"
+            }
+        });
+
+        // Salvar o tipo e a quantidade
+        contagemPorTipo.push({
+            tipo: tipoVeiculo.descricao,
+            quantidade: entradasAlocadas.length,
+            quantidadeMaxima: tipoVeiculo.quantidade_vagas
+        });
+        }
+        
+        return res.send(contagemPorTipo);
 
     }
     catch(error) {

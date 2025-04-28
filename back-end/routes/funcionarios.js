@@ -77,4 +77,10 @@ router.get('/encerrarSessao/true', controller.encerrarSessao);
     Nenhum dado, somente a URL corretamente
 */
 
+router.get('/verSessao/true', controller.verificaSessao);
+// Dados a serem informados
+/*
+    Nenhum dado, somente a URL corretamente
+*/
+
 export default router;

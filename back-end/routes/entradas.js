@@ -62,12 +62,17 @@ router.get('/', controller.retrieveAll);
     Nenhum dada a ser enviado
 */
 
+router.get('/contarTipos/true', controller.countVeiculosAlo);
+// Dados a serem informados
+/*
+    Nenhum dada a ser enviado
+*/
+
 router.put('/:id', controller.update);
 // Dados a serem informados
 /*
     placa:        String (Veiculo)
     cpf:          String (Cliente)
-    status:       String (Alocado, Cancelado, Finalizado)
     valor_hora:   String 
 */
 
@@ -78,6 +83,12 @@ router.put('/sair/:id', controller.saida);
 */
 
 router.put('/cancelar/:id', controller.cancelar);
+// Dados a serem informados
+/*
+    Somente Id via URL
+*/
+
+router.put('/reiniciar/:id', controller.reiniciar);
 // Dados a serem informados
 /*
     Somente Id via URL

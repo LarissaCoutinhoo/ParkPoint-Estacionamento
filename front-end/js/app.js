@@ -1,3 +1,45 @@
+// Sair da conta
+async function sairConta(){
+    const confirma = confirm("Desenja realmente Sair da Conta?");
+
+    if (!confirma){
+        return;
+    }
+
+    const resposta = await fetch('http://127.0.0.1:3000/funcionarios/encerrarSessao/true', {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    const dados = await resposta.json();
+
+    if (dados.result){
+        window.location.href = '../index.html';
+        return;
+    }else{
+        alert(dados.mensagem);
+    }
+    
+}
+
+// Verificar sessão
+async function verSessao(){
+    const resposta = await fetch('http://127.0.0.1:3000/funcionarios/verSessao/true', {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    const dados = await resposta.json();
+
+    if (!dados.result){
+        document.getElementById('usuarioLogado').innerHTML = "";
+        window.location.href = '../index.html';
+        return;
+    }else{
+        document.getElementById('usuarioLogado').innerHTML = "&nbsp;&nbsp;" + dados.nomeUsuario;
+    }
+    
+}
 
 const entradaForm = document.getElementById('entradaForm');
 const saidaForm = document.getElementById('saidaForm');

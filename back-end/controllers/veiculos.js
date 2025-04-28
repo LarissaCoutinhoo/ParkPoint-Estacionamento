@@ -28,11 +28,11 @@ controller.create = async function(req, res) {
             return res.status(400).json({ mensagem: "Placa não pode ser nula!" });
         }else if (req.body.cor.trim() === ""){
             return res.status(400).json({ mensagem: "Cor não pode ser nula!" });
-        }else if (req.body.tipo.trim() === ""){
-            return res.status(400).json({ mensagem: "Tipo não pode ser nulo!" });
         }else if (req.body.modelo.trim() === ""){
             return res.status(400).json({ mensagem: "Modelo não pode ser nulo!" });
         }
+
+        req.body.id_tipo = Number(req.body.id_tipo);
 
         // Verificando se a placa informada já não está em uso
         const placaCadastrada = await prisma.veiculo.findFirst({

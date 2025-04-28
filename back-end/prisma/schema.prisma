@@ -13,17 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model TipoVeiculo{
+  id               Int       @id @default(autoincrement())
+  descricao        String    @unique
+  quantidade_vagas Int
+
+  veiculos Veiculo[]
+}
+
 model Veiculo {
   id        Int       @id @default(autoincrement())
   placa           String    @unique
   cor             String  
-  tipo            String    // (Carro, moto, ônibus, van, caminhão)
+  id_tipo         Int
   modelo          String
   id_funcionario  Int
   status          Boolean @default(true) // (Ativo - Cancelado)
 
   funcionario       Funcionario      @relation(fields: [id_funcionario], references: [id])
-  entradas  Entrada[] // relacionamento 1:N com Entrada
+  tipoVeiculo       TipoVeiculo      @relation(fields: [id_tipo], references: [id])
+  entradas  Entrada[]
 }
 
 model Cliente {
