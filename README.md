@@ -50,7 +50,7 @@ Para que o site possa apresentar pleno funcionamento, é necessário um navegado
 
 ## ✒️ Autores
 
-* **[Larissa Coutinho Ferreira](https://github.com/joaoluquetti)** - *Criação do Front-End;*
+* **[Larissa Coutinho Ferreira](https://github.com/LarissaCoutinhoo)** - *Criação do Front-End;*
 * **[Luís Pedro Dutra Carrocini](https://github.com/luis-pedro-dutra-carrocini)** - *Criação do Back-End; Criação do Banco de Dados; Participação no Front-End;*
 * **[Maria Luiza Barbosa](https://github.com/mluizabss)** - *Criação do Front-End;*
 
