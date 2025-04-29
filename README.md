@@ -22,9 +22,11 @@ Para que o site possa apresentar pleno funcionamento, é necessário um navegado
 ## 🔧 Instalação
 
 * Baixe os arquivos e pastas contidos neste repositório e coloque-os em uma pasta;
-* Baixe o PostgreSQL no site oficial: [https://www.postgresql.org/download/](https://www.postgresql.org/download/);
+* Baixe o PostgreSQL no site oficial: [Postgres](https://www.postgresql.org/download/);
 * Obtenha acesso à Internet;
 * Deixe o JavaScript ativado no seu navegador;
+* Altere o nome do arquivo `back-end/.env.exemple` para `.env`;
+* Altere dentro do arquivo a variavel `DATABASE_URL` colocanddo a senha do Postgres e a Porta onde o banco está hospedado;
 * Execute no terminal do repositório o comando `cd back-end`;
 * Execute no terminal o comando `npx prisma migrate dev --name add-relacionamentos`;
 * Execute no terminal o comando `npx prisma generate`;
