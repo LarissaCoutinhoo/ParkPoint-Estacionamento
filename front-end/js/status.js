@@ -12,7 +12,7 @@ async function verStatusGar() {
 
         const dados = await resposta.json();
 
-        const tblRelatorio = document.getElementById('tabelaClientes'); // Deve ser o <tbody> da tabela
+        const tblRelatorio = document.getElementById('tabelaVeiculos'); // Deve ser o <tbody> da tabela
 
         if (dados.length === 0) {
             tblRelatorio.innerHTML = '<tr><td colspan="3">Nenhum dado encontrado.</td></tr>';

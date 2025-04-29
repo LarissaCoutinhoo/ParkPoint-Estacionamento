@@ -46,6 +46,10 @@ table {
     text-align: center;
   }
 
+  tr {
+    background-color: #ffffff;
+  }
+
   th {
     background-color: #f2f2f2;
   }
