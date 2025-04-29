@@ -268,6 +268,21 @@ controller.loginFuncionario = async function(req, res) {
                 nivel: funcionarioCadastrado.nivel
             };
 
+            // Criando os tipos de veículos padrão
+            await prisma.tipoVeiculo.create({
+                data: {
+                    descricao: "Moto",
+                    quantidade_vagas: 20
+                }
+            });
+
+            await prisma.tipoVeiculo.create({
+                data: {
+                    descricao: "Carro",
+                    quantidade_vagas: 20
+                }
+            });
+
             // Retornando resultado para redirecionamento no front
             // console.log(req.session.funcionario);
             return res.status(201).json({result: true, mensagem: "Usuário padrão criado! Não se esqueça de Alterar os Dados!"});
